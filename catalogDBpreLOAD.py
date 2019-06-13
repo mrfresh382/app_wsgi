@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin python
 
 # This loads the Big Bend Store app with data to view
 # This is not required to run the app, but will help test

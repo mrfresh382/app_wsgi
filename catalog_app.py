@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin python
 
 # See readme.md for full instructions on running this
 # Webapp. This is the Catalog App for
