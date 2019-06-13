@@ -11,7 +11,7 @@ from sqlalchemy.orm import sessionmaker
 
 from catalogDB_setup import Category, Base, Item, User
 
-engine = create_engine('sqlite:////var/www/app_wsgi/catalog-db.db')
+engine = create_engine('postgresql://ubuntu:CapitalPAssWord@localhost/catalog')
 
 Base.metadata.bind = engine
 

@@ -39,7 +39,7 @@ CLIENT_ID = json.loads(
 APPLICATION_NAME = "Catalog App"
 
 engine = create_engine(
-    'sqlite:////var/www/app_wsgi/catalog-db.db', connect_args={'check_same_thread': False})
+    'postgresql://ubuntu:CapitalPAssWord@localhost/catalog')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
