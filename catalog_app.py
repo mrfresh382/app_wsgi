@@ -31,7 +31,7 @@ from catalogDB_setup import Base, Category, Item, User
 app = Flask(__name__)
 # Connect to Database and create database session
 CLIENT_ID = json.loads(
-    open('client_secrets.json', 'r').read())['web']['client_id']
+    open('/var/www/app_wsgi/client_secrets.json', 'r').read())['web']['client_id']
 # Needs to be same file name as JSON file downloaded
 # from Google OAUTH API website
 # Login.html will need to be updated with your Google API id before running on
@@ -39,7 +39,7 @@ CLIENT_ID = json.loads(
 APPLICATION_NAME = "Catalog App"
 
 engine = create_engine(
-    'sqlite:///catalog-db.db', connect_args={'check_same_thread': False})
+    'sqlite:////var/www/app_wsgi/catalog-db.db', connect_args={'check_same_thread': False})
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
@@ -89,7 +89,7 @@ def gconnect():
 
     code = request.data
     try:
-        oauth_flow = flow_from_clientsecrets('client_secrets.json', scope='')
+        oauth_flow = flow_from_clientsecrets('/var/www/app_wsgi/client_secrets.json', scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:

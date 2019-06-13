@@ -72,5 +72,5 @@ class Item(Base):
         }
 
 
-engine = create_engine('sqlite:///catalog-db.db')
+engine = create_engine('sqlite:////var/www/app_wsgi/catalog-db.db')
 Base.metadata.create_all(engine)
