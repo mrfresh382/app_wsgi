@@ -1,0 +1,8 @@
+catalog-db.db
+client_secrets.json
+pg_config.sh
+Vagrantfile
+catalog_app.pyc
+catalogDB_setup.pyc
+catalogDBpreLOAD.pyc
+.vagrant
