@@ -243,10 +243,17 @@ def showCategorys():
     # show individual store items for each category. When
     # the user hovers over the category, a drop down will
     # display of items in that category
+
+    # This loop is updated to support unique category IDs
+    # SQLITE3 "re-used" database ids, but PosGreSQL,
+    # creates new category IDs once categories are deleted
+    # categories.html and publics categories.html were updated to fix this
+    # bug
     for category in categorys:
         itemList = session.query(Item).filter_by(category=category).all()
+        listOfItemNames[category.id] = []
         for item in itemList:
-            listOfItemNames[item.id].append(item.name)
+            listOfItemNames[category.id].append(item.name)
             indexOfNames += 1
             print indexOfNames
     if 'username' not in login_session:
