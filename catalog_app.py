@@ -237,7 +237,7 @@ def wholeStoreJSON():
 @app.route('/category/')
 def showCategorys():
     categorys = session.query(Category).order_by(asc(Category.name))
-    listOfItemNames = [[]]
+    listOfItemNames = {}
     indexOfNames = 0
     # This block of code is giving the mainpage the ability to
     # show individual store items for each category. When
@@ -245,10 +245,10 @@ def showCategorys():
     # display of items in that category
     for category in categorys:
         itemList = session.query(Item).filter_by(category=category).all()
-        for name in itemList:
-            listOfItemNames[indexOfNames].append(name.name)
-            listOfItemNames.append([])
-        indexOfNames += 1
+        for item in itemList:
+            listOfItemNames[item.id].append(item.name)
+            indexOfNames += 1
+            print indexOfNames
     if 'username' not in login_session:
         return render_template(
             'publiccategories.html', category=categorys,
