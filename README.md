@@ -33,11 +33,19 @@ A Google account and GitHub account are required for the user to have full permi
 - I accidently configured UFW with command "sudo ufw default deny outgoing" instead of "sudo ufw default allow outgoing" , this still permitted SSH into the VM, but I could not update packages or install new packages. 
 
 ## Design Notes
-### GUI
-I decided to "Love" the framework provided by Udacity and make some minor tweaks to the HTML layout and CSS. I made GUI updates throughout the project, while constantly testing for functionality. I added Login and Logout links in the appropriate places. Then I ensured that site navigation was functional. 
+### Hello World and First Steps
+I started this project by baseline configuring the server and creating a "Hello World" WSGI app. 
 
-### OAuth
-The first thing I did was follow along with the lessons and work to get my OAuth login and logout working.
+`if __name__ == '__main__':` section had to be updated to convert to WSGI to run with Apache Web Server. I did not setup a WSGI-APP daemon or create an '_init_.py' file as other students alluded to using. I was able to avoid these 2 steps and the app works just fine.
+
+### Pulled WebServer App files from GitHub
+I had to create a new GitHub repo due to the previous project getting corrupt. The web server files are in /var/www/app_wsgi. The shebang line, absolute paths, and other bugs were debugged here.
+
+### Setup DNS
+I have domain thedoug.online from GoDaddy.com, and I configured Apache and Google API to recognize this domain name. 
+
+### Setup SSH
+I used ............
 
 ### Catalog DB
 I refactored the database_setup.py file from the lesson to create catalogDB_setup.py. Each category is a section of the store. Each item, is an item sold at the store. I then created catalogDBpreLOAD.py to load dummy data into the database for additional testing. I tested by using 2 different Google accounts to ensure CRUD functions worked as desired. 
