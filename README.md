@@ -8,13 +8,51 @@ This is a website for a fictional general store at the Big Bend National Park ho
 - OAuth provided by Google API Console
 - HTTPS provided by 'Let's Encrypt'
 
+## VM Setup
+1. Select an Ubuntu 18.04 instance and open in Lightsail. 
+2. Enable Ports HTTP, HTTPS, TCP 123 , TCP 2200 in Networking and Firewall. 
+3. I temporarily allowed SSH on default port 22 in case of disaster. This step can be un-done at the end. 
+4. SSH into VM ( See 'User Guide for Udacity Grader' for help). Use the AWS provided SSH key to SSH into the VM for the first time. 
+5. Once SSHed, I ran these commands to setup the VM as user `ubuntu`
+```
+sudo apt-get update -y && sudo apt-get upgrade -y
+
+sudo ufw default deny incoming && sudo ufw default allow outgoing
+sudo ufw allow www && sudo ufw allow 123/tcp
+sudo ufw allow 2200/tcp
+sudo ufw allow 443/tcp
+sudo ufw enable -y
+sudo ufw status
+
+sudo apt-get install apache2 -y
+sudo apt-get install finger -y
+sudo apt-get install postgresql -y
+sudo apt-get install libapache2-mod-wsgi -y
+sudo apt-get install python-pip
+sudo apt-get install finger
+sudo pip install flask
+sudo pip install httplib2
+sudo pip install dos2unix
+sudo pip install oauth2client
+sudo pip install SQLalchemy
+sudo apt-get install python-psycopg2
+sudo apt-get install libpq-dev
+sudo apt-get install putty-tools
+```
+6. It would be advisable to setup a grader and student user as soon as possible incase you get locked out of the ubuntu account. 
+7. Disable remote root login and password login by adding directives to /etc/ssh/sshd_config:
+```
+PasswordAuthentication yes
+PermitRootLogin no
+```
+Setup the grader account
 ## Getting Started
 ### Prerequisites 
 A Google account is required for the user to have full permissions on the webpage. The grader must login to the server from SSH or PuTTY.
 
 
 ### User Guide for Udacity Grader
-There is the option to use the shell or PuTTY to SSH to the AWS VM. The public key and .ppk file are provided in the 'Additional Notes' section with the project submission. 
+There is the option to use the shell or PuTTY to SSH to the AWS VM. The public key and .ppk file are provided in the 'Additional Notes' section with the project submission. The provided key has a passphrase and the grader account also a password which is provided. 
 
 *Shell Option*
 1. Convert provided public key to private key in appropriate folder
