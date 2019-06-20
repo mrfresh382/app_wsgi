@@ -10,21 +10,29 @@ This is a website for a fictional general store at the Big Bend National Park ho
 
 ## Getting Started
 ### Prerequisites 
-A Google account and GitHub account are required for the user to have full permissions on the webpage. The grader must login to the server from SSH or PuTTY.
+A Google account is required for the user to have full permissions on the webpage. The grader must login to the server from SSH or PuTTY.
 
-### 
- for further troubleshooting. 
- 
+
 ### User Guide for Udacity Grader
+There is the option to use the shell or PuTTY to SSH to the AWS VM. The public key and .ppk file are provided in the 'Additional Notes' section with the project submission. 
 
-1. Use shell and cd to the vagrant directory 
-2. Open VM- `vagrant up`
-3. SSH into VM- `vagrant ssh`
-4. Once SSHed into VM type `cd /vagrant`
-5. From this folder you can run the project files, Static, and Template folder. Check to ensure they are accessible by executing `ls` command. If they are not viewable, check that you are in the '/vagrant' folder, then proceed with troubleshooting. 
-6. Execute python file within VM `python catalogDB_setup.py`. This will establish a blank SQLite database using SQLAlchemy for the web app. 
-7. Execute `python catalogDBpreLOAD.py` . This will add some info in the database for testing and viewing in the webpage. 
-8. Execute `python catalog-app.py` This will start the web app on port 8000 on your local machine. Visit http://localhost:8000 on either Firefox or Chrome to view the home page. Some output messages are visible on the shell. To close App, enter 'CTRL-C' on the keyboard to terminate.
+*Shell Option*
+1. Convert provided public to key private key in appropriate folder
+2. OR, use a virtual environment and install PuTTY keygen command line tool
+```
+sudo apt-get install putty-tools
+puttygen <provided key file> -O private-openssh -o <converted private key>
+sudo chmod 400 <converted private key>
+```
+3. Ensure key file has proper permissions and stored in appropriate directory such as /home/<user>/.ssh/...
+4. SSH into AWS instance: `ssh -i <converted private key path> -p 2200 grader@18.204.23.73`
+
+*PuTTY Option*
+1. Use provided keyfile and save as file with .ppk extension. 
+2. Use `grader@18.204.23.73` as host name and Port 2200. Provide path to .ppk file in /Connection/SSH/Auth field.
+
+### User Guide for General User
+1. Visit [http://thedoug.online](http://thedoug.online) and enjoy!!!
 
 ## Notes/Issues/Bugs
 - Links to HTTP had to be changed to HTTPS within the HTML templates
@@ -53,9 +61,12 @@ Creating a catalog database in PostGreSQL did not require much code conversion b
 ### JQuery and Drop Down lists
 I added JQuery to the Main page so that the user can preview category items before clicking on each category individually. See line 249 in catalog_app.py file for detailed explanation. 
 
+### HTTPS
+I re-configured Apache with the help of this [Digital Ocean tutorial](https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-18-04). I had to ensure HTTPS port 443 was enabled in UFW and AWS Security Group. 
+
 ## Built With
 - Sublime Text
-- Nano text editor. 
+- Nano text editor for last minute tweaks. 
 
 ## Author
 [mrfresh382](https://github.com/mrfresh382)
@@ -66,3 +77,5 @@ I added JQuery to the Main page so that the user can preview category items befo
 -[juvers Aka jayismonkey Linux Project Repo](https://github.com/juvers/Linux-Configuration)
 -[Apache 2.4 Documentation](https://httpd.apache.org/docs/2.4/)
 -Udacity
+-[Digital Ocean-HTTPS](https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-18-04)
+-[Digital Ocean Tutorials and Forums](https://www.digitalocean.com/)
