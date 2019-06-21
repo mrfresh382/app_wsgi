@@ -37,15 +37,51 @@ sudo pip install oauth2client
 sudo pip install SQLalchemy
 sudo apt-get install python-psycopg2
 sudo apt-get install libpq-dev
-sudo apt-get install putty-tools
 ```
-6. It would be advisable to setup a grader and student user as soon as possible incase you get locked out of the ubuntu account. 
-7. Disable remote root login and password login by adding directives to /etc/ssh/sshd_config:
+6. It would be advisable to setup a grader and student user as soon as possible incase you get locked out of the ubuntu account. I followed the Linux Security course lessons to create these user accounts and created SSH keypairs to login remotely using PuTTY on my local PC. 
+7. Disable remote root login and password login by adding directives to `/etc/ssh/sshd_config`:
 ```
-PasswordAuthentication yes
+PasswordAuthentication no
 PermitRootLogin no
 ```
-Setup the grader account
+8. Test the grader and student account
+9. Clone [app_wspi](https://github.com/mrfresh382/app_wsgi) repo to folder `/var/www/app_wsgi`. Ensure folder has permissions set at 755. I set the `/var/www/html/` folder and `/var/www/html/index.html` file to 400 because they will not be used and do not need to be accessed. Files within /var/www/app_wsgi are set as follows:
+```
+drwxr-xr-x 5 root     root      4096 .
+drwxr-xr-x 4 root     root      4096 ..
+dr-xr--r-- 8 root     ubuntu    4096 .git
+-rw-r--r-- 1 root     root       124 .ignore
+-rwxr--r-- 1 root     root      7399 README.md
+-rwxr-xr-x 1 root     root      2024 catalogDB_setup.py
+-rwxr-xr-x 1 root     root      3142 catalogDBpreLOAD.py
+-rwxr-xr-x 1 root     root     17568 catalog_app.py
+-rw-r-xr-x 1 www-data www-data 14011 catalog_app.pyc
+-rwxr-xr-x 1 root     root       162 catalog_app_wsgi.wsgi
+-r-xr--r-- 1 root     root       874 client_secrets.json
+drwxr-xr-x 2 root     root      4096 static
+drwxr-xr-x 2 root     root      4096 templates
+```
+10. I used this flow to setup the PostGreSQL database for the website on the server. I changed the password for default user/role 'postgres' and created another user/role named 'ubuntu' with a database named catalog under public schema. I altered priviledges as follows:
+```
+sudo –u postgres psql postgres
+  \password postgres;
+sudo -u postgres createuser --interactive  
+psql
+  \password  # Created a new password
+  createdb catalog;
+  \q
+psql catalog # Ensure a database exists by using \d
+  \q
+
+psql catalog
+  GRANT USAGE ON SCHEMA public TO ubuntu;
+  ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO ubuntu;
+  ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO ubuntu;
+  ALTER ROLE ubuntu  WITH   nosuperuser nocreatedb nocreaterole nobybassrls;
+  REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA PUBLIC FROM postgres;
+  REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA PUBLIC FROM postgres;
+  \q
+```
 ## Getting Started
 ### Prerequisites 
 A Google account is required for the user to have full permissions on the webpage. The grader must login to the server from SSH or PuTTY.
