@@ -62,6 +62,7 @@ drwxr-xr-x 2 root     root      4096 static
 drwxr-xr-x 2 root     root      4096 templates
 ```
 The app_wsgi directory should have the following files;
+```
 ├── app_wsgi
 │   ├── README.md
 │   ├── catalogDB_setup.py
@@ -91,7 +92,7 @@ The app_wsgi directory should have the following files;
 │       ├── publiccategories.html
 │       ├── publicheader.html
 │       └── publiclist.html
-
+```
 10. I used this flow to setup the PostGreSQL database for the website on the server. I changed the password for default user/role 'postgres' and created another user/role named 'ubuntu' with a database named `catalog` under public schema. I altered priviledges as follows:
 ```
 sudo –u postgres psql postgres
@@ -174,6 +175,7 @@ ServerSignature Off
 ```
 13. Test the website by running command `sudo apachectl restart` to start server. Goto www.thedoug.online and see if you can login and view the webpage. 
 14. Ensure ufw and firewall is configured if you leave the server for a long time. Disable port 22 SSH if enabled within ufw, AWS Lightsail, and /etc/ssh/sshd_config file. 
+15. Restart ssh service using `sudo service ssh restart` or reboot entire instance `sudo reboot`. Periodically reboot instance is good idea.
 
 ## Getting Started
 ### Prerequisites 
