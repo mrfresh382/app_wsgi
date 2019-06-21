@@ -38,7 +38,7 @@ sudo pip install SQLalchemy
 sudo apt-get install python-psycopg2
 sudo apt-get install libpq-dev
 ```
-6. It would be advisable to setup a grader and student user as soon as possible incase you get locked out of the ubuntu account. I followed the Linux Security course lessons to create these user accounts and created SSH keypairs to login remotely using PuTTY on my local PC. 
+6. It would be advisable to setup a grader and student user as soon as possible incase you get locked out of the ubuntu account. I followed the Linux Security course lessons to create these user accounts and created SSH keypairs to login remotely using PuTTY on my local PC. Enable root access for user grader by updating /etc/sudoers file. 
 7. Disable remote root login and password login by adding directives to `/etc/ssh/sshd_config`:
 ```
 PasswordAuthentication no
@@ -61,7 +61,7 @@ dr-xr--r-- 8 root     ubuntu    4096 .git
 drwxr-xr-x 2 root     root      4096 static
 drwxr-xr-x 2 root     root      4096 templates
 ```
-The app_wsgi directory should have the following setup;
+The app_wsgi directory should have the following files;
 ├── app_wsgi
 │   ├── README.md
 │   ├── catalogDB_setup.py
@@ -113,7 +113,7 @@ psql catalog
   REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM postgres;
   \q
 ```
-11. After configuring the DNS and HTTPS with the help of Digital Ocean tutorials, I have two files in /etc/apache2/sites-enabled:
+11. DNS and HTTPS can be configured at the same time using the 'Let's Encrypt' tool. After configuring the DNS and HTTPS with the help of Digital Ocean tutorials, I have two files in /etc/apache2/sites-enabled:
 - 000-default-le-ssl.conf
 ```
 <IfModule mod_ssl.c>
@@ -173,7 +173,8 @@ ServerTokens Prod
 ServerSignature Off
 ```
 13. Test the website by running command `sudo apachectl restart` to start server. Goto www.thedoug.online and see if you can login and view the webpage. 
-14. Ensure ufw and firewall is configured if you leave the webpage for a long time. Disable port 22 SSH if enabled within ufw, AWS Lightsail, and /etc/ssh/sshd_config file. 
+14. Ensure ufw and firewall is configured if you leave the server for a long time. Disable port 22 SSH if enabled within ufw, AWS Lightsail, and /etc/ssh/sshd_config file. 
+
 ## Getting Started
 ### Prerequisites 
 A Google account is required for the user to have full permissions on the webpage. The grader must login to the server from SSH or PuTTY.
@@ -203,7 +204,7 @@ sudo chmod 400 <converted private key>
 ## Notes/Issues/Bugs
 - Links to HTTP for fonts had to be changed to HTTPS within the HTML templates
 - Full path for client_secrets.json had to be added to the python file. This hard-coded change is not preferable, but works in this case. 
-- catalog_app.py showCatagorys() function had to be updated to properly display preview items while browsing mainpage. Upon conversion to PostGreSQL, the lists had to be converted to dictionaries to properly display items and prevent fatal errors. 
+- catalog_app.py:showCatagorys() function had to be updated to properly display preview items while browsing mainpage. Upon conversion to PostGreSQL, the lists had to be converted to dictionaries to properly display items and prevent fatal errors. 
 - I accidently configured UFW with command "sudo ufw default deny outgoing" instead of "sudo ufw default allow outgoing" , this still permitted SSH into the VM, but I could not update packages or install new packages. 
 
 ## Design Notes
@@ -225,7 +226,7 @@ I used PuTTY to primarily SSH into the VM, but tested SSH using GitBash in a Win
 Creating a catalog database in PostGreSQL did not require much code conversion besides making sure the correct packages were installed on the VM. Unlike SQLite3, PostGreSQL will create new primary key for new categories, rather than overwriting previous primary key integers, so this required a minor code change to accomodate all functionality. Instead of using a numbered list, I opted to use dictionaries to store the db so that I could preview using JQuery. 
 
 ### JQuery and Drop Down lists
-I added JQuery to the Main page so that the user can preview category items before clicking on each category individually. See line 249 in catalog_app.py file for detailed explanation. 
+I added JQuery to the Main page so that the user can preview category items before clicking on each category individually. See line 242 in catalog_app.py file for detailed explanation. 
 
 ### HTTPS
 I re-configured Apache with the help of this [Digital Ocean tutorial](https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-18-04). I had to ensure HTTPS port 443 was enabled in UFW and AWS Security Group. 
