@@ -61,14 +61,45 @@ dr-xr--r-- 8 root     ubuntu    4096 .git
 drwxr-xr-x 2 root     root      4096 static
 drwxr-xr-x 2 root     root      4096 templates
 ```
-10. I used this flow to setup the PostGreSQL database for the website on the server. I changed the password for default user/role 'postgres' and created another user/role named 'ubuntu' with a database named catalog under public schema. I altered priviledges as follows:
+The app_wsgi directory should have the following setup;
+├── app_wsgi
+│   ├── README.md
+│   ├── catalogDB_setup.py
+│   ├── catalogDBpreLOAD.py
+│   ├── catalog_app.py
+│   ├── catalog_app.pyc
+│   ├── catalog_app_wsgi.wsgi
+│   ├── client_secrets.json
+│   ├── static
+│   │   ├── blank_user.gif
+│   │   ├── styles.css
+│   │   └── top-banner.jpg
+│   └── templates
+│       ├── categories.html
+│       ├── deletecategory.html
+│       ├── deleteitem.html
+│       ├── editcategory.html
+│       ├── edititem.html
+│       ├── header.html
+│       ├── list.html
+│       ├── login.html
+│       ├── logout.html
+│       ├── main.html
+│       ├── main.html.save
+│       ├── newcategory.html
+│       ├── newitem.html
+│       ├── publiccategories.html
+│       ├── publicheader.html
+│       └── publiclist.html
+
+10. I used this flow to setup the PostGreSQL database for the website on the server. I changed the password for default user/role 'postgres' and created another user/role named 'ubuntu' with a database named `catalog` under public schema. I altered priviledges as follows:
 ```
 sudo –u postgres psql postgres
   \password postgres;
 sudo -u postgres createuser --interactive  
-psql
+psql # login as new user 'ubuntu'
   \password  # Created a new password
-  createdb catalog;
+  CREATEDB catalog;
   \q
 psql catalog # Ensure a database exists by using \d
   \q
@@ -78,10 +109,71 @@ psql catalog
   ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO ubuntu;
   ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO ubuntu;
   ALTER ROLE ubuntu  WITH   nosuperuser nocreatedb nocreaterole nobybassrls;
-  REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA PUBLIC FROM postgres;
-  REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA PUBLIC FROM postgres;
+  REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM postgres;
+  REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM postgres;
   \q
 ```
+11. After configuring the DNS and HTTPS with the help of Digital Ocean tutorials, I have two files in /etc/apache2/sites-enabled:
+- 000-default-le-ssl.conf
+```
+<IfModule mod_ssl.c>
+<VirtualHost *:443>
+        ServerName www.thedoug.online
+        ServerAlias thedoug.online
+        WSGIScriptAlias / /var/www/app_wsgi/catalog_app_wsgi.wsgi
+        ServerAdmin webmaster@localhost
+
+        <Directory /var/www/app_wsgi>
+                Order allow,deny
+                Allow from all
+                WSGIScriptReloading On
+        </Directory>
+        <Directory /var/www/app_wsgi/templates>
+                Order allow,deny
+                Allow from all
+        </Directory>
+        <Directory /var/www/app_wsgi/static>
+                Order allow,deny
+                Allow from all
+        </Directory>
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+        Include /etc/letsencrypt/options-ssl-apache.conf
+        SSLCertificateFile /etc/letsencrypt/live/thedoug.online/fullchain.pem
+        SSLCertificateKeyFile /etc/letsencrypt/live/thedoug.online/privkey.pem
+</VirtualHost>
+</IfModule>
+```
+- 000-default.conf
+```
+<VirtualHost *:80>
+        ServerName www.thedoug.online
+        ServerAlias thedoug.online
+        WSGIScriptAlias / /var/www/app_wsgi/catalog_app_wsgi.wsgi
+
+        ServerAdmin webmaster@localhost
+
+        <Directory /var/www/app_wsgi>
+                Order allow,deny
+                Allow from all
+                WSGIScriptReloading On
+        </Directory>
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+        RewriteEngine on
+        RewriteCond %{SERVER_NAME} =thedoug.online [OR]
+        RewriteCond %{SERVER_NAME} =www.thedoug.online
+        RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
+</VirtualHost>
+
+```
+12. I added the following directives to /etc/apache2/conf-enabled/security.conf:
+```
+ServerTokens Prod
+ServerSignature Off
+```
+13. Test the website by running command `sudo apachectl restart` to start server. Goto www.thedoug.online and see if you can login and view the webpage. 
+14. Ensure ufw and firewall is configured if you leave the webpage for a long time. Disable port 22 SSH if enabled within ufw, AWS Lightsail, and /etc/ssh/sshd_config file. 
 ## Getting Started
 ### Prerequisites 
 A Google account is required for the user to have full permissions on the webpage. The grader must login to the server from SSH or PuTTY.
