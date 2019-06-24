@@ -47,8 +47,10 @@ PasswordAuthentication no
 PermitRootLogin no
 ```
 Once complete with editing the sshd_config file, restart ssh service `sudo service ssh restart && sudo service ssh status`
--*Note*: If you made a typo with the sshd_config file or any other error config with SSH service, and you reboot the VM, your SSH service will not work and you will not be able to SSH into your VM. 
+- *Note*: If you made a typo with the sshd_config file or any other error config with SSH service, and you reboot the VM, your SSH service will not work and you will not be able to SSH into your VM. 
+
 8. Test the grader and student account
+
 9. Clone [app_wspi](https://github.com/mrfresh382/app_wsgi) repo to folder `/var/www/app_wsgi`. Ensure folder has permissions set at 755. I set the `/var/www/html/` folder and `/var/www/html/index.html` file to 400 because they will not be used and do not need to be accessed. Files within /var/www/app_wsgi are set as follows:
 ```
 drwxr-xr-x 5 root     root      4096 .
