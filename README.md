@@ -111,7 +111,8 @@ psql catalog
   GRANT USAGE ON SCHEMA public TO ubuntu;
   ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO ubuntu;
   ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO ubuntu;
-  ALTER ROLE ubuntu  WITH   nosuperuser nocreatedb nocreaterole nobybassrls;
+  ALTER ROLE ubuntu  WITH   nosuperuser nocreatedb nocreaterole nobypassrls;
+  ALTER ROLE postrgesql  WITH   nosuperuser nocreatedb nocreaterole nobypassrls noreplication;
   REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM postgres;
   REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM postgres;
   \q
@@ -195,12 +196,12 @@ sudo apt-get install putty-tools
 puttygen <provided key file> -O private-openssh -o <converted private key>
 sudo chmod 400 <converted private key>
 ```
-3. Ensure key file has proper permissions and stored in appropriate directory such as /home/<user>/.ssh/...
-4. SSH into AWS instance: `ssh -i <converted private key path> -p 2200 grader@18.204.23.73`
+3. Ensure key file has proper permissions and stored in appropriate directory such as /home/user/.ssh/...
+4. SSH into AWS instance: `ssh -i <converted private key path> -p 2200 grader@54.147.109.156`
 
 *PuTTY Option*
 1. Use provided keyfile and save as file with .ppk extension. 
-2. Use `grader@18.204.23.73` as host name and Port `2200`. Provide path to .ppk file in /Connection/SSH/Auth field.
+2. Use `grader@54.147.109.156` as host name and Port `2200`. Provide path to .ppk file in /Connection/SSH/Auth field.
 
 ### User Guide for General User
 1. Visit [http://thedoug.online](http://thedoug.online) and enjoy!!!
