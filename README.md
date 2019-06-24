@@ -38,7 +38,9 @@ sudo pip install SQLalchemy
 sudo apt-get install python-psycopg2
 sudo apt-get install libpq-dev
 ```
+
 6. It would be advisable to setup a grader and student user as soon as possible incase you get locked out of the ubuntu account. I followed the Linux Security course lessons to create these user accounts and created SSH keypairs to login remotely using PuTTY on my local PC. Enable root access for user grader by updating /etc/sudoers file. 
+
 7. Disable remote root login and password login by adding directives to `/etc/ssh/sshd_config`:
 ```
 PasswordAuthentication no
@@ -112,7 +114,7 @@ psql catalog
   ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO ubuntu;
   ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO ubuntu;
   ALTER ROLE ubuntu  WITH   nosuperuser nocreatedb nocreaterole nobypassrls;
-  ALTER ROLE postrgesql  WITH   nosuperuser nocreatedb nocreaterole nobypassrls noreplication;
+  ALTER ROLE postgres  WITH   nosuperuser nocreatedb nocreaterole nobypassrls noreplication;
   REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM postgres;
   REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM postgres;
   \q
