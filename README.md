@@ -44,6 +44,8 @@ sudo apt-get install libpq-dev
 PasswordAuthentication no
 PermitRootLogin no
 ```
+Once complete with editing the sshd_config file, restart ssh service `sudo service ssh restart && sudo service ssh status`
+-*Note*: If you made a typo with the sshd_config file or any other error config with SSH service, and you reboot the VM, your SSH service will not work and you will not be able to SSH into your VM. 
 8. Test the grader and student account
 9. Clone [app_wspi](https://github.com/mrfresh382/app_wsgi) repo to folder `/var/www/app_wsgi`. Ensure folder has permissions set at 755. I set the `/var/www/html/` folder and `/var/www/html/index.html` file to 400 because they will not be used and do not need to be accessed. Files within /var/www/app_wsgi are set as follows:
 ```
@@ -175,7 +177,7 @@ ServerSignature Off
 ```
 13. Test the website by running command `sudo apachectl restart` to start server. Goto www.thedoug.online and see if you can login and view the webpage. 
 14. Ensure ufw and firewall is configured if you leave the server for a long time. Disable port 22 SSH if enabled within ufw, AWS Lightsail, and /etc/ssh/sshd_config file. 
-15. Restart ssh service using `sudo service ssh restart` or reboot entire instance `sudo reboot`. Periodically reboot instance is good idea.
+15. Restart ssh service using `sudo service ssh restart` or reboot entire instance `sudo reboot`. Update the server and restart services to ensure continutity. Make backup snapshots with AWS Lightsail GUI often. 
 
 ## Getting Started
 ### Prerequisites 
@@ -183,7 +185,7 @@ A Google account is required for the user to have full permissions on the webpag
 
 
 ### User Guide for Udacity Grader
-There is the option to use the shell or PuTTY to SSH to the AWS VM. The public key and .ppk file are provided in the 'Additional Notes' section with the project submission. The provided key has a passphrase and the grader account also a password which is provided. 
+There is the option to use the shell or PuTTY to SSH to the AWS VM. The public key and .ppk file are provided in the 'Additional Notes' section with the project submission. The provided key has a passphrase and the grader account also has a password which is provided. 
 
 *Shell Option*
 1. Convert provided public key to private key in appropriate folder
@@ -225,7 +227,7 @@ I have domain thedoug.online from GoDaddy.com, and I configured Apache and Googl
 I used PuTTY to primarily SSH into the VM, but tested SSH using GitBash in a Windows 7 environment and Vagrant Ubuntu environment. I had to use `puttygen` command to convert .ppk file to a key file recognizable by shell 'ssh' command. 
 
 ### Catalog DB
-Creating a catalog database in PostGreSQL did not require much code conversion besides making sure the correct packages were installed on the VM. Unlike SQLite3, PostGreSQL will create new primary key for new categories, rather than overwriting previous primary key integers, so this required a minor code change to accomodate all functionality. Instead of using a numbered list, I opted to use dictionaries to store the db so that I could preview using JQuery. 
+Creating a catalog database in PostGreSQL did not require much code conversion besides making sure the correct packages were installed on the VM. Unlike SQLite3, PostGreSQL will create new primary key for new categories, rather than overwriting previous primary key integers, so this required a minor code change to accomodate all functionality. Instead of using a numbered list, I opted to use dictionaries to store the DB so that I could preview using JQuery. 
 
 ### JQuery and Drop Down lists
 I added JQuery to the Main page so that the user can preview category items before clicking on each category individually. See line 242 in catalog_app.py file for detailed explanation. 
@@ -241,10 +243,10 @@ I re-configured Apache with the help of this [Digital Ocean tutorial](https://ww
 [mrfresh382](https://github.com/mrfresh382)
 
 ## Acknowledgments
--[PostGreSQL](https://www.postgresql.org/docs/)
--[StackOverFlow](https://stackoverflow.com)
--[juvers Aka jayismonkey Linux Project Repo](https://github.com/juvers/Linux-Configuration)
--[Apache 2.4 Documentation](https://httpd.apache.org/docs/2.4/)
--Udacity
--[Digital Ocean-HTTPS](https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-18-04)
--[Digital Ocean Tutorials and Forums](https://www.digitalocean.com/)
+- [PostGreSQL](https://www.postgresql.org/docs/)
+- [StackOverFlow](https://stackoverflow.com)
+- [juvers Aka jayismonkey Linux Project Repo](https://github.com/juvers/Linux-Configuration)
+- [Apache 2.4 Documentation](https://httpd.apache.org/docs/2.4/)
+- Udacity
+- [Digital Ocean-HTTPS](https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-18-04)
+- [Digital Ocean Tutorials and Forums](https://www.digitalocean.com/)
