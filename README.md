@@ -16,6 +16,7 @@ This is a website for a fictional general store at the Big Bend National Park ho
 5. Once SSHed, I ran these commands to setup the VM as user `ubuntu`
 ```
 sudo apt-get update -y && sudo apt-get upgrade -y
+sudo apt-get upgrade --with-new-packages
 
 sudo ufw default deny incoming && sudo ufw default allow outgoing
 sudo ufw allow www && sudo ufw allow 123/tcp
